@@ -201,9 +201,9 @@ height = 70.0
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(633, 306)
 script = ExtResource("1_8fc7m")
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-hframes = 11
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, 0)

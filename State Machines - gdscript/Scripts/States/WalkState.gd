@@ -5,11 +5,4 @@ class_name WalkState
 @onready var anim_player: AnimatedSprite2D = $"../../AnimatedSprite2D"
 
 func Enter():
-  anim_player.play("Walk")
-  pass
-
-func Exit():
-  pass
-
-func Update(delta: float):
-  pass
+  anim_player.play("WalkState")

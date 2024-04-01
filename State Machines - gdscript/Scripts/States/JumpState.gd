@@ -5,7 +5,7 @@ class_name JumpState
 @onready var anim_player: AnimatedSprite2D = $"../../AnimatedSprite2D"
 
 func Enter():
-  anim_player.play("Jump")
+  anim_player.play("JumpState")
   pass
 
 func Exit():
