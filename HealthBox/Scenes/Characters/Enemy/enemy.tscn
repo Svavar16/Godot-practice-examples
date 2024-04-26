@@ -1,0 +1,86 @@
+[gd_scene load_steps=16 format=3 uid="uid://dwu3vw37755vt"]
+
+[ext_resource type="Texture2D" uid="uid://cdd5qm4kqvulc" path="res://Assets/Bandits/Heavy Bandit/Idle/HeavyBandit_Idle_0.png" id="1_gp2h3"]
+[ext_resource type="Script" path="res://Scripts/Shared/HurtComponent.gd" id="2_8ruoa"]
+[ext_resource type="Script" path="res://Scripts/Shared/HitComponent.gd" id="3_7kfh4"]
+[ext_resource type="Script" path="res://Scripts/Shared/HealthComponent.gd" id="4_vhy3c"]
+[ext_resource type="Script" path="res://Scripts/Shared/StateMachine.gd" id="5_s3skr"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/IdleState.gd" id="6_xwsi6"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/WalkState.gd" id="7_wnm5w"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/AttackState.gd" id="8_2cba0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cyjn0"]
+radius = 12.0
+height = 52.0
+
+[sub_resource type="Animation" id="Animation_p8gsb"]
+resource_name = "IdleState"
+
+[sub_resource type="Animation" id="Animation_6jtqr"]
+resource_name = "WalkState"
+
+[sub_resource type="Animation" id="Animation_7ihc3"]
+resource_name = "AttackState"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4lnvn"]
+_data = {
+"AttackState": SubResource("Animation_7ihc3"),
+"IdleState": SubResource("Animation_p8gsb"),
+"WalkState": SubResource("Animation_6jtqr")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_68wps"]
+radius = 13.0
+height = 50.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2i3c6"]
+
+[node name="Enemy" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("1_gp2h3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("CapsuleShape2D_cyjn0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4lnvn")
+}
+
+[node name="HurtComponent" type="Area2D" parent="."]
+script = ExtResource("2_8ruoa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtComponent"]
+position = Vector2(0, 5)
+shape = SubResource("CapsuleShape2D_68wps")
+debug_color = Color(0.964706, 0, 0.498039, 0.419608)
+
+[node name="HitComponent" type="Area2D" parent="."]
+script = ExtResource("3_7kfh4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitComponent"]
+position = Vector2(-22, 3)
+shape = SubResource("RectangleShape2D_2i3c6")
+disabled = true
+debug_color = Color(0.631373, 0.529412, 0, 0.419608)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("4_vhy3c")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "character", "anim_player")]
+script = ExtResource("5_s3skr")
+initial_state = NodePath("IdleState")
+character = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("6_xwsi6")
+
+[node name="WalkState" type="Node" parent="StateMachine"]
+script = ExtResource("7_wnm5w")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("8_2cba0")
