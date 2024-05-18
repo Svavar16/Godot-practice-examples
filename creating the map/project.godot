@@ -13,3 +13,7 @@ config_version=5
 config/name="creating the map"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://planet-earth.png"
+
+[autoload]
+
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
