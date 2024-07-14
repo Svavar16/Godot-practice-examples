@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://klccue2y6526"]
+
+[ext_resource type="Texture2D" uid="uid://dvmyqu0dqj42f" path="res://Assets/King/Idle.png" id="1_nu6dp"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p6src"]
+height = 48.0
+
+[node name="Player" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-5, -50)
+scale = Vector2(1, 1.0045)
+texture = ExtResource("1_nu6dp")
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("CapsuleShape2D_p6src")
