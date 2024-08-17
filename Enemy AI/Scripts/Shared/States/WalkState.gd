@@ -9,5 +9,5 @@ func _ready():
 
 func _physics_process(delta):
 	if stateMachine.character.velocity == Vector2.ZERO:
-		Transitoned.emit(self, "IdleState")
+		Transitioned.emit(self, "IdleState")
 		

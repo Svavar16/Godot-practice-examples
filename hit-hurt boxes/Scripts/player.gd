@@ -7,11 +7,11 @@ const SPEED: float = 300.0
 
 signal  facing_direction_changed
 
-func _physics_process(delta):
+func _physics_process(_delta) -> void :
 	move_and_slide()
 
-func _input(event):
-	var direction = Input.get_axis("ui_left", "ui_right")
+func _input(_event) -> void:
+	var direction: float = Input.get_axis("ui_left", "ui_right")
 	
 	if direction:
 		velocity.x = direction * SPEED

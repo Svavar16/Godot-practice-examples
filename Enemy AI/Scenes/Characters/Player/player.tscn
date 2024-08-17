@@ -1,9 +1,34 @@
-[gd_scene load_steps=3 format=3 uid="uid://klccue2y6526"]
+[gd_scene load_steps=13 format=3 uid="uid://klccue2y6526"]
 
 [ext_resource type="Texture2D" uid="uid://dvmyqu0dqj42f" path="res://Assets/King/Idle.png" id="1_nu6dp"]
+[ext_resource type="Script" path="res://Scripts/Shared/StateMachine.gd" id="2_2g6yy"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/IdleState.gd" id="3_uq5qq"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/WalkState.gd" id="4_3jcfj"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/AttackState.gd" id="5_qlq6i"]
+[ext_resource type="Script" path="res://Scripts/Shared/States/JumpState.gd" id="6_woxfs"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p6src"]
 height = 48.0
+
+[sub_resource type="Animation" id="Animation_m52lv"]
+resource_name = "IdleState"
+
+[sub_resource type="Animation" id="Animation_lb3w8"]
+resource_name = "AttackState"
+
+[sub_resource type="Animation" id="Animation_x65mh"]
+resource_name = "WalkState"
+
+[sub_resource type="Animation" id="Animation_jui4p"]
+resource_name = "JumpState"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ky8gy"]
+_data = {
+"AttackState": SubResource("Animation_lb3w8"),
+"IdleState": SubResource("Animation_m52lv"),
+"JumpState": SubResource("Animation_jui4p"),
+"WalkState": SubResource("Animation_x65mh")
+}
 
 [node name="Player" type="CharacterBody2D"]
 
@@ -16,3 +41,23 @@ hframes = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -24)
 shape = SubResource("CapsuleShape2D_p6src")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_2g6yy")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("3_uq5qq")
+
+[node name="WalkState" type="Node" parent="StateMachine"]
+script = ExtResource("4_3jcfj")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("5_qlq6i")
+
+[node name="JumpState" type="Node" parent="StateMachine"]
+script = ExtResource("6_woxfs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ky8gy")
+}
