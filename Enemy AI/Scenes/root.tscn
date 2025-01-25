@@ -1352,3 +1352,7 @@ position = Vector2(116, -7)
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_0cw86")
 format = 2
+
+[node name="Layer1" type="TileMapLayer" parent="TileMap"]
+use_parent_material = true
+tile_set = SubResource("TileSet_0cw86")

@@ -7,7 +7,7 @@ class_name WalkState
 func _ready():
 	stateMachine = get_parent()
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if stateMachine.character.velocity == Vector2.ZERO:
 		Transitioned.emit(self, "IdleState")
 		

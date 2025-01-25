@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://klccue2y6526"]
+[gd_scene load_steps=14 format=3 uid="uid://klccue2y6526"]
 
+[ext_resource type="Script" path="res://Scripts/Characters/Player/player.gd" id="1_8ega0"]
 [ext_resource type="Texture2D" uid="uid://dvmyqu0dqj42f" path="res://Assets/King/Idle.png" id="1_nu6dp"]
 [ext_resource type="Script" path="res://Scripts/Shared/StateMachine.gd" id="2_2g6yy"]
 [ext_resource type="Script" path="res://Scripts/Shared/States/IdleState.gd" id="3_uq5qq"]
@@ -10,17 +11,17 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p6src"]
 height = 48.0
 
-[sub_resource type="Animation" id="Animation_m52lv"]
-resource_name = "IdleState"
-
 [sub_resource type="Animation" id="Animation_lb3w8"]
 resource_name = "AttackState"
 
-[sub_resource type="Animation" id="Animation_x65mh"]
-resource_name = "WalkState"
+[sub_resource type="Animation" id="Animation_m52lv"]
+resource_name = "IdleState"
 
 [sub_resource type="Animation" id="Animation_jui4p"]
 resource_name = "JumpState"
+
+[sub_resource type="Animation" id="Animation_x65mh"]
+resource_name = "WalkState"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ky8gy"]
 _data = {
@@ -31,6 +32,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_8ega0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-5, -50)
