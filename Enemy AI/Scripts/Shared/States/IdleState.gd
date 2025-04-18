@@ -1,13 +1,19 @@
 extends State
 
-class_name IdleState
-
 @onready var stateMachine: StateMachine
 
-func _input(event):
-	if Input.get_axis("ui_left", "ui_right"):
-		Transitioned.emit(self, "WalkState")
-		#stateMachine.on_child_transition(self, "WalkState")
+func _ready():
+	stateMachine = get_parent()
+
+# func _input(_event):
+func _physics_process(_delta):
+	var direction = Input.get_axis("ui_left", "ui_right")
+
+	if direction:
+		stateMachine.on_child_transition(self, "WalkState")
 	elif Input.is_action_pressed("Attack"):
-		Transitioned.emit(self, "AttackState")
-		#stateMachine.on_child_transition(self, "AttackState")
+		stateMachine.on_child_transition(self, "AttackState")
+		# this needs to be in a process function, so we can have the correct state
+	elif Input.is_action_just_pressed("ui_accept") && stateMachine.character.velocity.y < 0:
+		stateMachine.on_child_transition(self, "JumpState")
+
