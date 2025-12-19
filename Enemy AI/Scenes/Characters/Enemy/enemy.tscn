@@ -1,12 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://ba3dbtnhkqnnb"]
+[gd_scene load_steps=10 format=3 uid="uid://ba3dbtnhkqnnb"]
 
 [ext_resource type="Texture2D" uid="uid://c1nhviu8v3dkd" path="res://Assets/Light Bandit/Idle/LightBandit_Idle_0.png" id="1_hdbde"]
+[ext_resource type="Script" uid="uid://fkw4gi7cp64o" path="res://Scripts/Characters/Enemy/enemy.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://dj8tko5bygkwa" path="res://Scripts/Shared/StateMachine.gd" id="3_sm"]
+[ext_resource type="Script" uid="uid://bs04f2o1wn6wp" path="res://Scripts/Shared/States/PatrolState.gd" id="4_patrol"]
+[ext_resource type="Script" uid="uid://d2xbrk4p6e0j3" path="res://Scripts/Shared/States/ChaseState.gd" id="5_chase"]
+[ext_resource type="Script" uid="uid://dvfgt377vc5hb" path="res://Scripts/Shared/States/AttackState.gd" id="6_attack"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mxj6t"]
 radius = 14.0
 height = 54.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 136.09187
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_attack"]
+radius = 40.0
+
 [node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("2_script")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -31)
@@ -16,3 +28,45 @@ texture = ExtResource("1_hdbde")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -27)
 shape = SubResource("CapsuleShape2D_mxj6t")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, -27)
+shape = SubResource("CircleShape2D_detection")
+debug_color = Color(0.7212266, 0.4349429, 0.5437742, 0.41960785)
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(0, -27)
+shape = SubResource("CircleShape2D_attack")
+debug_color = Color(0.988235, 0.109804, 0, 0.419608)
+
+[node name="LineOfSight" type="RayCast2D" parent="."]
+position = Vector2(0, -27)
+target_position = Vector2(0, 0)
+collision_mask = 3
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state", "character")]
+script = ExtResource("3_sm")
+initial_state = NodePath("PatrolState")
+character = NodePath("..")
+
+[node name="PatrolState" type="Node" parent="StateMachine"]
+script = ExtResource("4_patrol")
+
+[node name="RayCast2D" type="RayCast2D" parent="StateMachine/PatrolState"]
+position = Vector2(0, -10)
+target_position = Vector2(20, 0)
+
+[node name="ChaseState" type="Node" parent="StateMachine"]
+script = ExtResource("5_chase")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("6_attack")
+return_state = "ChaseState"

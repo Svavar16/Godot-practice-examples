@@ -1,17 +1,17 @@
 extends Node
 class_name State
 
-signal Transitioned
-	
-func Enter():
-	pass
-	
-func Exit():
-	pass
-	
-func Physics_Update(_delta: float):
-	pass
-	
-func Update(_delta: float):
-	pass
+signal Transitioned(state, to_state)
+
+func Enter() -> void:
+    pass
+
+func Exit() -> void:
+    pass
+
+func Physics_Update(_delta: float) -> void:
+    pass
+
+func Update(_delta: float) -> void:
+    pass
 	

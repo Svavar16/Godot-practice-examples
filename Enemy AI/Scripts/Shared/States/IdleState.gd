@@ -5,15 +5,35 @@ extends State
 func _ready():
 	stateMachine = get_parent()
 
-# func _input(_event):
-func _physics_process(_delta):
-	var direction = Input.get_axis("ui_left", "ui_right")
+func Enter():
+	if stateMachine and stateMachine.anim_player:
+		var ap = stateMachine.anim_player
+		if ap.has_animation("idle"):
+			ap.play("idle")
+		elif ap.has_animation("Idle"):
+			ap.play("Idle")
 
-	if direction:
-		stateMachine.on_child_transition(self, "WalkState")
-	elif Input.is_action_pressed("Attack"):
-		stateMachine.on_child_transition(self, "AttackState")
-		# this needs to be in a process function, so we can have the correct state
-	elif Input.is_action_just_pressed("ui_accept") && stateMachine.character.velocity.y < 0:
-		stateMachine.on_child_transition(self, "JumpState")
+func Physics_Update(_delta):
+	if not stateMachine.character.is_on_floor():
+		if stateMachine.character.velocity.y > 0:
+			emit_signal("Transitioned", self, "FallState")
+		else:
+			emit_signal("Transitioned", self, "JumpState")
+		return
+
+	if stateMachine.character.has_method("is_jumping") and stateMachine.character.is_jumping():
+		emit_signal("Transitioned", self, "JumpState")
+		return
+
+	var direction = 0.0
+	if stateMachine.character.has_method("get_movement_direction"):
+		direction = stateMachine.character.get_movement_direction()
+
+	if direction != 0:
+		emit_signal("Transitioned", self, "WalkState")
+		return
+
+	if stateMachine.character.has_method("is_attacking") and stateMachine.character.is_attacking():
+		emit_signal("Transitioned", self, "AttackState")
+		return
 
